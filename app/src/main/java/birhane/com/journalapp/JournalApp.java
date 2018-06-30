@@ -12,6 +12,6 @@ public class JournalApp extends Application {
     }
 
     public JournalRepository getJournalRepository() {
-        return JournalRepository.getInstance(getDatabase().journalDao());
+        return JournalRepository.getInstance(getDatabase());
     }
 }

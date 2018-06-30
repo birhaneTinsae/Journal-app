@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +15,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements JournalAdapter.It
     private JournalAdapter mAdapter;
     private AppDatabase mDb;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements JournalAdapter.It
 
         mRecyclerView = findViewById(R.id.rv_articles);
         mAdapter = new JournalAdapter(this);
-       // mAdapter.setJournals(getEntries());
+        // mAdapter.setJournals(getEntries());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
@@ -102,7 +113,17 @@ public class MainActivity extends AppCompatActivity implements JournalAdapter.It
         if (id == R.id.action_settings) {
             return true;
         }
-
+        if (id == R.id.action_logout) {
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // user is now signed out
+                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                            finish();
+                        }
+                    });
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -136,8 +157,37 @@ public class MainActivity extends AppCompatActivity implements JournalAdapter.It
     private List<Journal> getEntries() {
         ArrayList<Journal> entries = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
-            entries.add(new Journal("Snowy day today", "Still testing journaling apps,but got a few posts edited.December posts lool goods o far.", new Date(), new Date()));
+            entries.add(new Journal("Snowy day today", "Still testing journaling apps,but got a few posts edited.December posts lool goods o far.", new Date()));
         }
         return entries;
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+//    private void createAccount(String email, String password) {
+//        mAuth.createUserWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.d(TAG, "createUserWithEmail:success");
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//                            updateUI(user);
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+//                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+//                            updateUI(null);
+//                        }
+//
+//                        // ...
+//                    }
+//                });
+//    }
 }

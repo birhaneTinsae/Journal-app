@@ -15,7 +15,7 @@ import birhane.com.journalapp.data.model.Journal;
 
 public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.EntryViewHolder> {
     private ItemClickListener mOnItemClickListener;
-    private List<Journal> mJournalEntries;
+    private List<Journal> mJournalEntries=new ArrayList<>();
 
     public JournalAdapter(ItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;

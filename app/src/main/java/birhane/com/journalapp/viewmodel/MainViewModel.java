@@ -22,6 +22,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public MainViewModel(@NonNull Application application) {
         super(application);
+        this.journalRepository=new JournalApp().getJournalRepository();
     }
 
 //    @Inject
@@ -43,21 +44,5 @@ public class MainViewModel extends AndroidViewModel {
     public LiveData<List<Journal>> getJournals() {
         return this.journalRepository.getJournals();
     }
-    public static class Factory extends ViewModelProvider.NewInstanceFactory{
-        private final Application mApplication;
-        private final int mJournalId;
-        private final JournalRepository mRepository;
 
-        public Factory(Application mApplication, int mJournalId) {
-            this.mApplication = mApplication;
-            this.mJournalId = mJournalId;
-            this.mRepository=((JournalApp) mApplication).getJournalRepository();
-        }
-
-        @NonNull
-        @Override
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new AddNewJournalViewModel(mJournalId);
-        }
-    }
 }

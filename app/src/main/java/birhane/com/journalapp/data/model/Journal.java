@@ -15,19 +15,19 @@ public class Journal {
     private String content;
     @ColumnInfo(name = "created_date")
     private Date createdDate;
-    @ColumnInfo(name = "updated_date")
-    private Date updatedDate;
+//    @ColumnInfo(name = "updated_date")
+//    private Date updatedDate;
 
     public Journal() {
 
     }
 
     @Ignore
-    public Journal(String title, String content, Date createdDate, Date updatedDate) {
+    public Journal(String title, String content, Date createdDate/*, Date updatedDate*/) {
         this.title = title;
         this.content = content;
         this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
+        //this.updatedDate = updatedDate;
     }
 
     public int getId() {
@@ -62,11 +62,20 @@ public class Journal {
         this.createdDate = createdDate;
     }
 
-    public Date getUpdatedDate() {
-        return updatedDate;
+    @Override
+    public String toString() {
+        return "Journal{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", createdDate=" + createdDate +
+                '}';
     }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
+//    public Date getUpdatedDate() {
+//        return updatedDate;
+//    }
+//
+//    public void setUpdatedDate(Date updatedDate) {
+//        this.updatedDate = updatedDate;
+//    }
 }

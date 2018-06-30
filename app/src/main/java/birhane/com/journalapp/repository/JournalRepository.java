@@ -7,22 +7,24 @@ import java.util.List;
 import birhane.com.journalapp.AppExecutors;
 import birhane.com.journalapp.dao.JournalDao;
 import birhane.com.journalapp.data.model.Journal;
+import birhane.com.journalapp.database.AppDatabase;
 
 
 public class JournalRepository {
-    private final JournalDao mJournalDao;
+
+    private final AppDatabase mDb;
     private static JournalRepository sInstance;
     private static final Object LOCK=new Object();
 
 
-    private JournalRepository(JournalDao journalDao) {
-        this.mJournalDao = journalDao;
+    private JournalRepository(final AppDatabase database) {
+       this.mDb=database;
     }
 
-    public static JournalRepository getInstance(JournalDao journalDao) {
+    public static JournalRepository getInstance(final AppDatabase database) {
         if (sInstance==null){
             synchronized (LOCK){
-                sInstance=new JournalRepository(journalDao);
+                sInstance=new JournalRepository(database);
             }
         }
         return sInstance;
@@ -30,7 +32,7 @@ public class JournalRepository {
 
     public LiveData<Journal> getJournal(int journalId) {
 
-        return mJournalDao.loadJournalById(journalId);
+        return mDb.journalDao().loadJournalById(journalId);
     }
 
     private void refreshJournals() {
@@ -44,7 +46,7 @@ public class JournalRepository {
 
     public LiveData<List<Journal>> getJournals() {
         refreshJournals();
-        return mJournalDao.getAllJournals();
+        return mDb.journalDao().getAllJournals();
 
     }
 }
