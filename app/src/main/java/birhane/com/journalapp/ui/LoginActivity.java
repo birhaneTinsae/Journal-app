@@ -10,8 +10,12 @@ import android.view.View;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.common.Scopes;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 import birhane.com.journalapp.R;
 
@@ -33,8 +37,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
+
+
+
             startActivityForResult(
-                    AuthUI.getInstance().createSignInIntentBuilder().build(), RC_SIGN_IN);
+                    AuthUI.getInstance().createSignInIntentBuilder()
+                            .setAvailableProviders(Arrays.asList(new AuthUI.IdpConfig.GoogleBuilder().build())).build(), RC_SIGN_IN);
+        }else{
+            startActivity(new Intent(LoginActivity.this,MainActivity.class));
         }
     }
 
@@ -58,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 showSnackbar(getString(R.string.unknown_error));
                 Log.e(TAG, getString(R.string.sign_in_error), response.getError());
+
             }
         }
 
@@ -65,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showSnackbar(String msg) {
         View parent=findViewById(android.R.id.content);
-        Snackbar.make(parent, "Replace with your own action", Snackbar.LENGTH_LONG)
+        Snackbar.make(parent, msg, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
 
     }

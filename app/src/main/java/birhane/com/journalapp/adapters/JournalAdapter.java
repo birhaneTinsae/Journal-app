@@ -2,11 +2,13 @@ package birhane.com.journalapp.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,8 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.EntryVie
     public void onBindViewHolder(@NonNull EntryViewHolder holder, int position) {
         holder.mTextViewEntryContent.setText(mJournalEntries.get(position).getContent());
         holder.mTextViewEntryTitle.setText(mJournalEntries.get(position).getTitle());
+
+        holder.getmTextViewEntryDate.setText(DateFormat.getDateInstance(DateFormat.MEDIUM).format(mJournalEntries.get(position).getCreatedDate()));
     }
 
     @Override
@@ -53,12 +57,13 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.EntryVie
     }
 
     class EntryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView mTextViewEntryContent, mTextViewEntryTitle;
+        private TextView mTextViewEntryContent, mTextViewEntryTitle,getmTextViewEntryDate;
 
         EntryViewHolder(View itemView) {
             super(itemView);
             mTextViewEntryContent = itemView.findViewById(R.id.text_view_entry_content);
             mTextViewEntryTitle = itemView.findViewById(R.id.text_view_entry_title);
+            getmTextViewEntryDate=itemView.findViewById(R.id.text_view_date);
 
             itemView.setOnClickListener(this);
         }
